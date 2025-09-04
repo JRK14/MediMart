@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Blood Donors</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .test-section { margin: 20px 0; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; }
+        .test-section h3 { margin-top: 0; color: #333; }
+        button { padding: 12px 24px; margin: 10px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-success:hover { background: #1e7e34; }
+        .btn-warning { background: #ffc107; color: #212529; }
+        .btn-warning:hover { background: #e0a800; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-danger:hover { background: #c82333; }
+        .result { margin: 15px 0; padding: 15px; border-radius: 6px; border-left: 4px solid #007bff; background: #f8f9fa; }
+        .success { border-left-color: #28a745; background: #d4edda; }
+        .error { border-left-color: #dc3545; background: #f8d7da; }
+        .warning { border-left-color: #ffc107; background: #fff3cd; }
+        .info { border-left-color: #17a2b8; background: #d1ecf1; }
+        .status { font-weight: bold; margin-bottom: 10px; }
+        .data-display { max-height: 400px; overflow-y: auto; margin-top: 15px; border: 1px solid #ddd; border-radius: 4px; }
+        .donor-card { border: 1px solid #ddd; margin: 10px; padding: 15px; border-radius: 6px; background: #f8f9fa; }
+        .donor-card h4 { margin: 0 0 10px 0; color: #333; }
+        .donor-details { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .donor-details p { margin: 5px 0; }
+        .donor-details strong { color: #555; }
+        .loading { color: #666; font-style: italic; }
+        .error-text { color: #dc3545; }
+        .success-text { color: #28a745; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Blood Donors Debug Console</h1>
+        <p>This page helps debug the blood donors functionality step by step.</p>
+        
+        <div class="test-section">
+            <h3>📡 Test 1: Backend API Connection</h3>
+            <p>Test if the backend API is working and returning data.</p>
+            <button class="btn-primary" onclick="testBackendAPI()">🚀 Test Backend API</button>
+            <div id="backend-result" class="result">
+                <div class="status">⏳ Ready to test...</div>
+                <div class="content"></div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔧 Test 2: JavaScript Functions</h3>
+            <p>Check if the required JavaScript functions are available.</p>
+            <button class="btn-warning" onclick="testJavaScriptFunctions()">🔍 Check Functions</button>
+            <div id="js-result" class="result">
+                <div class="status">⏳ Ready to test...</div>
+                <div class="content"></div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 Test 3: Load Blood Donors</h3>
+            <p>Test the complete blood donors loading process.</p>
+            <button class="btn-success" onclick="testLoadBloodDonors()">🩸 Load Blood Donors</button>
+            <div id="load-result" class="result">
+                <div class="status">⏳ Ready to test...</div>
+                <div class="content"></div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎯 Test 4: Display Blood Donors</h3>
+            <p>Test displaying the blood donors data in a table format.</p>
+            <button class="btn-primary" onclick="testDisplayBloodDonors()">📋 Display Data</button>
+            <div id="display-result" class="result">
+                <div class="status">⏳ Ready to test...</div>
+                <div class="content"></div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🚀 Test 5: Complete Flow</h3>
+            <p>Test the entire process from API call to display.</p>
+            <button class="btn-success" onclick="testCompleteFlow()">🎬 Run Complete Test</button>
+            <div id="complete-result" class="result">
+                <div class="status">⏳ Ready to test...</div>
+                <div class="content"></div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔧 Manual Testing</h3>
+            <p>Manual testing functions for debugging.</p>
+            <button class="btn-warning" onclick="clearAllResults()">🗑️ Clear Results</button>
+            <button class="btn-danger" onclick="resetPage()">🔄 Reset Page</button>
+        </div>
+    </div>
+
+    <script>
+        // Global variable to store test data
+        window.testData = null;
+        
+        // Test 1: Backend API Connection
+        async function testBackendAPI() {
+            const resultDiv = document.getElementById('backend-result');
+            resultDiv.className = 'result info';
+            resultDiv.querySelector('.status').innerHTML = '🔄 Testing backend API connection...';
+            resultDiv.querySelector('.content').innerHTML = '<div class="loading">Connecting to http://localhost:3001/api/hospital/blood-donations...</div>';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/hospital/blood-donations');
+                const data = await response.json();
+                
+                if (data.success && data.donations) {
+                    resultDiv.className = 'result success';
+                    resultDiv.querySelector('.status').innerHTML = '✅ Backend API Connection Successful!';
+                    resultDiv.querySelector('.content').innerHTML = `
+                        <div class="success-text">
+                            <p><strong>Status:</strong> ${response.status} OK</p>
+                            <p><strong>Data Received:</strong> ${data.donations.length} blood donations</p>
+                            <p><strong>First Donation:</strong> ${data.donations[0].donorName} (${data.donations[0].bloodType})</p>
+                        </div>
+                    `;
+                    
+                    // Store data for other tests
+                    window.testData = data.donations;
+                    console.log('✅ Backend API test successful:', data);
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.querySelector('.status').innerHTML = '❌ Backend API Error';
+                    resultDiv.querySelector('.content').innerHTML = `
+                        <div class="error-text">
+                            <p><strong>Error:</strong> ${data.message || 'Unknown error'}</p>
+                            <p><strong>Response:</strong> ${JSON.stringify(data, null, 2)}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.querySelector('.status').innerHTML = '❌ Backend API Connection Failed';
+                resultDiv.querySelector('.content').innerHTML = `
+                    <div class="error-text">
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p><strong>Type:</strong> ${error.name}</p>
+                    </div>
+                `;
+                console.error('❌ Backend API test failed:', error);
+            }
+        }
+        
+        // Test 2: JavaScript Functions
+        function testJavaScriptFunctions() {
+            const resultDiv = document.getElementById('js-result');
+            resultDiv.className = 'result info';
+            resultDiv.querySelector('.status').innerHTML = '🔍 Checking JavaScript functions...';
+            
+            // Check if we're in the right context
+            const functions = {
+                'loadBloodDonors': typeof loadBloodDonors,
+                'displayBloodDonors': typeof displayBloodDonors,
+                'refreshBloodDonors': typeof refreshBloodDonors
+            };
+            
+            const availableFunctions = Object.entries(functions).filter(([name, type]) => type === 'function');
+            const missingFunctions = Object.entries(functions).filter(([name, type]) => type !== 'function');
+            
+            let content = '<div class="donor-details">';
+            
+            if (availableFunctions.length > 0) {
+                content += '<div class="success-text"><h4>✅ Available Functions:</h4>';
+                availableFunctions.forEach(([name, type]) => {
+                    content += `<p><strong>${name}:</strong> ${type}</p>`;
+                });
+                content += '</div>';
+            }
+            
+            if (missingFunctions.length > 0) {
+                content += '<div class="error-text"><h4>❌ Missing Functions:</h4>';
+                missingFunctions.forEach(([name, type]) => {
+                    content += `<p><strong>${name}:</strong> ${type} (should be 'function')</p>`;
+                });
+                content += '</div>';
+            }
+            
+            content += '</div>';
+            
+            if (missingFunctions.length === 0) {
+                resultDiv.className = 'result success';
+                resultDiv.querySelector('.status').innerHTML = '✅ All Required Functions Available!';
+            } else {
+                resultDiv.className = 'result warning';
+                resultDiv.querySelector('.status').innerHTML = '⚠️ Some Functions Missing';
+            }
+            
+            resultDiv.querySelector('.content').innerHTML = content;
+        }
+        
+        // Test 3: Load Blood Donors
+        async function testLoadBloodDonors() {
+            const resultDiv = document.getElementById('load-result');
+            resultDiv.className = 'result info';
+            resultDiv.querySelector('.status').innerHTML = '🔄 Testing loadBloodDonors function...';
+            resultDiv.querySelector('.content').innerHTML = '<div class="loading">Attempting to call loadBloodDonors()...</div>';
+            
+            try {
+                if (typeof loadBloodDonors === 'function') {
+                    // Call the function
+                    loadBloodDonors();
+                    
+                    resultDiv.className = 'result success';
+                    resultDiv.querySelector('.status').innerHTML = '✅ loadBloodDonors Function Called Successfully!';
+                    resultDiv.querySelector('.content').innerHTML = `
+                        <div class="success-text">
+                            <p><strong>Status:</strong> Function executed without errors</p>
+                            <p><strong>Note:</strong> Check the hospital dashboard to see if data loaded</p>
+                            <p><strong>Console:</strong> Check browser console for detailed logs</p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.querySelector('.status').innerHTML = '❌ loadBloodDonors Function Not Available';
+                    resultDiv.querySelector('.content').innerHTML = `
+                        <div class="error-text">
+                            <p><strong>Error:</strong> loadBloodDonors function is not defined</p>
+                            <p><strong>Available:</strong> ${typeof loadBloodDonors}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.querySelector('.status').innerHTML = '❌ Error Executing loadBloodDonors';
+                resultDiv.querySelector('.content').innerHTML = `
+                    <div class="error-text">
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p><strong>Stack:</strong> ${error.stack}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Test 4: Display Blood Donors
+        function testDisplayBloodDonors() {
+            const resultDiv = document.getElementById('display-result');
+            resultDiv.className = 'result info';
+            resultDiv.querySelector('.status').innerHTML = '🔄 Testing displayBloodDonors function...';
+            
+            if (!window.testData) {
+                resultDiv.className = 'result warning';
+                resultDiv.querySelector('.status').innerHTML = '⚠️ No Test Data Available';
+                resultDiv.querySelector('.content').innerHTML = `
+                    <div class="warning">
+                        <p>Please run "Test Backend API" first to get data.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            try {
+                if (typeof displayBloodDonors === 'function') {
+                    // Call the function with test data
+                    displayBloodDonors(window.testData);
+                    
+                    resultDiv.className = 'result success';
+                    resultDiv.querySelector('.status').innerHTML = '✅ displayBloodDonors Function Called Successfully!';
+                    resultDiv.querySelector('.content').innerHTML = `
+                        <div class="success-text">
+                            <p><strong>Status:</strong> Function executed with ${window.testData.length} donations</p>
+                            <p><strong>Note:</strong> Check the hospital dashboard to see if data displayed</p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.querySelector('.status').innerHTML = '❌ displayBloodDonors Function Not Available';
+                    resultDiv.querySelector('.content').innerHTML = `
+                        <div class="error-text">
+                            <p><strong>Error:</strong> displayBloodDonors function is not defined</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.querySelector('.status').innerHTML = '❌ Error Executing displayBloodDonors';
+                resultDiv.querySelector('.content').innerHTML = `
+                    <div class="error-text">
+                        <p><strong>Error:</strong> ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Test 5: Complete Flow
+        async function testCompleteFlow() {
+            const resultDiv = document.getElementById('complete-result');
+            resultDiv.className = 'result info';
+            resultDiv.querySelector('.status').innerHTML = '🔄 Running complete flow test...';
+            resultDiv.querySelector('.content').innerHTML = '<div class="loading">Testing complete blood donors flow...</div>';
+            
+            try {
+                // Step 1: Test API
+                const response = await fetch('http://localhost:3001/api/hospital/blood-donations');
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(`API Error: ${data.message}`);
+                }
+                
+                // Step 2: Test functions
+                if (typeof loadBloodDonors !== 'function') {
+                    throw new Error('loadBloodDonors function not available');
+                }
+                
+                if (typeof displayBloodDonors !== 'function') {
+                    throw new Error('displayBloodDonors function not available');
+                }
+                
+                // Step 3: Execute functions
+                loadBloodDonors();
+                
+                resultDiv.className = 'result success';
+                resultDiv.querySelector('.status').innerHTML = '✅ Complete Flow Test Successful!';
+                resultDiv.querySelector('.content').innerHTML = `
+                    <div class="success-text">
+                        <p><strong>✅ API Connection:</strong> Successful (${data.donations.length} donations)</p>
+                        <p><strong>✅ Functions:</strong> All required functions available</p>
+                        <p><strong>✅ Execution:</strong> loadBloodDonors() called successfully</p>
+                        <p><strong>🎯 Next Step:</strong> Check hospital dashboard for data display</p>
+                    </div>
+                `;
+                
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.querySelector('.status').innerHTML = '❌ Complete Flow Test Failed';
+                resultDiv.querySelector('.content').innerHTML = `
+                    <div class="error-text">
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p><strong>Type:</strong> ${error.name}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Utility functions
+        function clearAllResults() {
+            const results = document.querySelectorAll('.result');
+            results.forEach(result => {
+                result.className = 'result';
+                result.querySelector('.status').innerHTML = '⏳ Ready to test...';
+                result.querySelector('.content').innerHTML = '';
+            });
+            window.testData = null;
+        }
+        
+        function resetPage() {
+            location.reload();
+        }
+        
+        // Auto-run first test on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔍 Blood Donors Debug Console loaded');
+            setTimeout(() => {
+                testBackendAPI();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
+
+

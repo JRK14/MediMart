@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Blood Donors</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; margin: 10px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .result { margin: 10px 0; padding: 10px; background: #f8f9fa; border-left: 4px solid #007bff; }
+        .error { border-left-color: #dc3545; background: #f8d7da; }
+        .success { border-left-color: #28a745; background: #d4edda; }
+    </style>
+</head>
+<body>
+    <h1>Test Blood Donors API</h1>
+    
+    <div class="test-section">
+        <h3>Test 1: Direct API Call</h3>
+        <button onclick="testDirectAPI()">Test Direct API Call</button>
+        <div id="api-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 2: Load Blood Donors Function</h3>
+        <button onclick="testLoadFunction()">Test Load Function</button>
+        <div id="function-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 3: Display Blood Donors</h3>
+        <button onclick="testDisplayFunction()">Test Display Function</button>
+        <div id="display-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 4: Complete Flow</h3>
+        <button onclick="testCompleteFlow()">Test Complete Flow</button>
+        <div id="complete-result" class="result"></div>
+    </div>
+
+    <script>
+        // Test 1: Direct API Call
+        async function testDirectAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.innerHTML = 'Testing direct API call...';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/hospital/blood-donations');
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <strong>✅ API Call Successful!</strong><br>
+                        Status: ${response.status}<br>
+                        Found: ${data.donations.length} blood donations<br>
+                        First donation: ${data.donations[0].donorName} (${data.donations[0].bloodType})
+                    `;
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.innerHTML = `<strong>❌ API Error:</strong> ${data.message}`;
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<strong>❌ Fetch Error:</strong> ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        // Test 2: Load Function
+        async function testLoadFunction() {
+            const resultDiv = document.getElementById('function-result');
+            resultDiv.innerHTML = 'Testing load function...';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/hospital/blood-donations');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        resultDiv.innerHTML = `
+                            <strong>✅ Load Function Working!</strong><br>
+                            Found ${data.donations.length} donations<br>
+                            Ready to display data
+                        `;
+                        resultDiv.className = 'result success';
+                        // Store data for next test
+                        window.testDonations = data.donations;
+                    } else {
+                        resultDiv.innerHTML = `<strong>❌ API Error:</strong> ${data.message}`;
+                        resultDiv.className = 'result error';
+                    }
+                } else {
+                    resultDiv.innerHTML = `<strong>❌ HTTP Error:</strong> ${response.status}`;
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<strong>❌ Error:</strong> ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        // Test 3: Display Function
+        function testDisplayFunction() {
+            const resultDiv = document.getElementById('display-result');
+            
+            if (!window.testDonations) {
+                resultDiv.innerHTML = '<strong>❌ No data to display. Run Test 2 first.</strong>';
+                resultDiv.className = 'result error';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<strong>✅ Testing display function...</strong><br>';
+            
+            try {
+                const donations = window.testDonations;
+                const donorsHTML = donations.map(donation => `
+                    <div style="border: 1px solid #ddd; margin: 5px; padding: 10px;">
+                        <strong>${donation.donorName}</strong> - ${donation.bloodType}<br>
+                        Age: ${donation.age}, Weight: ${donation.weight}kg<br>
+                        Status: ${donation.status}, Contact: ${donation.donorEmail}
+                    </div>
+                `).join('');
+                
+                resultDiv.innerHTML += `
+                    <strong>✅ Display Function Working!</strong><br>
+                    Successfully created HTML for ${donations.length} donations<br>
+                    <div style="max-height: 300px; overflow-y: auto; margin-top: 10px;">
+                        ${donorsHTML}
+                    </div>
+                `;
+                resultDiv.className = 'result success';
+            } catch (error) {
+                resultDiv.innerHTML += `<strong>❌ Display Error:</strong> ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        // Test 4: Complete Flow
+        async function testCompleteFlow() {
+            const resultDiv = document.getElementById('complete-result');
+            resultDiv.innerHTML = 'Testing complete flow...';
+            
+            try {
+                // Step 1: Load data
+                const response = await fetch('http://localhost:3001/api/hospital/blood-donations');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                if (!data.success) throw new Error(data.message);
+                
+                // Step 2: Process data
+                const donations = data.donations;
+                if (!donations || donations.length === 0) throw new Error('No donations found');
+                
+                // Step 3: Display data
+                const donorsHTML = donations.map(donation => `
+                    <div style="border: 1px solid #ddd; margin: 5px; padding: 10px; background: #f8f9fa;">
+                        <strong>${donation.donorName}</strong> - ${donation.bloodType}<br>
+                        Age: ${donation.age}, Weight: ${donation.weight}kg, Hemoglobin: ${donation.hemoglobin}<br>
+                        Date: ${new Date(donation.donationDate).toLocaleDateString()}<br>
+                        Center: ${donation.donationCenter || 'Not specified'}<br>
+                        Status: <span style="color: ${donation.status === 'approved' ? 'green' : 'orange'}">${donation.status}</span><br>
+                        Contact: ${donation.donorEmail}
+                    </div>
+                `).join('');
+                
+                resultDiv.innerHTML = `
+                    <strong>✅ Complete Flow Working!</strong><br>
+                    Successfully loaded and displayed ${donations.length} blood donations<br>
+                    <div style="max-height: 400px; overflow-y: auto; margin-top: 10px;">
+                        ${donorsHTML}
+                    </div>
+                `;
+                resultDiv.className = 'result success';
+                
+            } catch (error) {
+                resultDiv.innerHTML = `<strong>❌ Complete Flow Error:</strong> ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+    </script>
+</body>
+</html>
+
+

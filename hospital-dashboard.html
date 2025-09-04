@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Dashboard - VMEDITHON</title>
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="http://localhost:3001/chat-widget.css">
+    <script src="http://localhost:3001/chat-widget.js" defer></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="logo1.jpeg" alt="Logo" class="logo">
+                    <h1>VMEDITHON</h1>
+                </div>
+                <div class="user-info">
+                    <span id="hospital-name">Welcome, Hospital</span>
+                    <button id="logout-btn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Navigation Tabs -->
+            <nav class="dashboard-nav">
+                <button class="nav-tab active" data-tab="buying-selling">Buying & Selling</button>
+                <button class="nav-tab" data-tab="appointments">Appointment Management</button>
+                <button class="nav-tab" data-tab="doctors">Doctor Management</button>
+                <button class="nav-tab" data-tab="blood-donors">Blood Donors Database</button>
+                <button class="nav-tab" data-tab="company-aid">Company Aid Providers</button>
+                <button class="nav-tab" data-tab="inventory">Inventory Management</button>
+                <button class="nav-tab" data-tab="profile">Hospital Profile</button>
+            </nav>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Buying & Selling Tab -->
+                <div id="buying-selling" class="tab-panel active">
+                    <h2>Buying & Selling Management</h2>
+                    <div class="buying-selling-container">
+                        <div class="buying-section">
+                            <h3><i class="fas fa-shopping-cart"></i> Buying</h3>
+                            <div class="buying-form">
+                                <form id="buying-form">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="item-name">Item/Service Name</label>
+                                            <input type="text" id="item-name" name="itemName" placeholder="e.g., MRI Machine, Surgical Equipment">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="item-category">Category</label>
+                                            <select id="item-category" name="category">
+                                                <option value="">Select Category</option>
+                                                <option value="equipment">Medical Equipment</option>
+                                                <option value="medications">Medications</option>
+                                                <option value="supplies">Medical Supplies</option>
+                                                <option value="services">Medical Services</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="quantity">Quantity</label>
+                                            <input type="number" id="quantity" name="quantity" min="1" value="1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="budget">Budget Range</label>
+                                            <input type="text" id="budget" name="budget" placeholder="e.g., $1000 - $5000">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="buying-description">Description & Requirements</label>
+                                        <textarea id="buying-description" name="description" rows="3" placeholder="Describe what you need, specifications, quality requirements..."></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="urgency">Urgency Level</label>
+                                        <select id="urgency" name="urgency">
+                                            <option value="low">Low - Can wait</option>
+                                            <option value="medium">Medium - Needed soon</option>
+                                            <option value="high">High - Urgent</option>
+                                            <option value="critical">Critical - Emergency</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn-primary">Post Buying Request</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="selling-section">
+                            <h3><i class="fas fa-tags"></i> Selling</h3>
+                            <div class="selling-form">
+                                <form id="selling-form">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="sell-item-name">Item/Service Name</label>
+                                            <input type="text" id="sell-item-name" name="itemName" placeholder="e.g., Used X-Ray Machine, Surplus Medications">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sell-item-category">Category</label>
+                                            <select id="sell-item-category" name="category">
+                                                <option value="">Select Category</option>
+                                                <option value="equipment">Medical Equipment</option>
+                                                <option value="medications">Medications</option>
+                                                <option value="supplies">Medical Supplies</option>
+                                                <option value="services">Medical Services</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="sell-quantity">Available Quantity</label>
+                                            <input type="number" id="sell-quantity" name="quantity" min="1" value="1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="price">Price</label>
+                                            <input type="text" id="price" name="price" placeholder="e.g., $500 or Best Offer">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="selling-description">Description & Specifications</label>
+                                        <textarea id="selling-description" name="description" rows="3" placeholder="Describe the item, condition, specifications, warranty..."></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="condition">Condition</label>
+                                        <select id="condition" name="condition">
+                                            <option value="new">New</option>
+                                            <option value="like-new">Like New</option>
+                                            <option value="good">Good</option>
+                                            <option value="fair">Fair</option>
+                                            <option value="poor">Poor</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn-primary">Post Selling Listing</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appointment Management Tab -->
+                <div id="appointments" class="tab-panel">
+                    <h2><i class="fas fa-calendar-check"></i> Appointment Management</h2>
+                    <div class="appointments-container">
+                        <div class="appointments-header">
+                            <h3>Pending Appointments</h3>
+                            <p>Review and approve patient appointment requests</p>
+                        </div>
+                        
+                        <div class="appointments-table-container">
+                            <table class="appointments-table">
+                                <thead>
+                                    <tr>
+                                        <th>Patient Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Specialty</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Notes</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appointments-tbody">
+                                    <!-- Appointments will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="appointments-summary">
+                            <div class="summary-card">
+                                <h4>Total Appointments</h4>
+                                <span id="total-appointments">0</span>
+                            </div>
+                            <div class="summary-card">
+                                <h4>Pending Approval</h4>
+                                <span id="pending-appointments">0</span>
+                            </div>
+                            <div class="summary-card">
+                                <h4>Approved</h4>
+                                <span id="approved-appointments">0</span>
+                            </div>
+                            <div class="summary-card">
+                                <h4>Rejected</h4>
+                                <span id="rejected-appointments">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor Management Tab -->
+                <div id="doctors" class="tab-panel">
+                    <div class="doctors-header">
+                        <h2><i class="fas fa-user-md"></i> Doctor Management</h2>
+                        <button class="btn-primary" onclick="openAddDoctorModal()">
+                            <i class="fas fa-plus"></i> Add New Doctor
+                        </button>
+                        <button class="btn-secondary" onclick="testAddDoctorButton()" style="margin-left: 10px;">
+                            🧪 Test Button
+                        </button>
+                        <button class="btn-secondary" onclick="console.log('Function exists:', typeof openAddDoctorModal); openAddDoctorModal();" style="margin-left: 10px; background: #dc3545;">
+                            🔴 Inline Test
+                        </button>
+                    </div>
+                    <div class="doctors-container" id="doctors-container">
+                        <!-- Doctors will be loaded dynamically -->
+                        <div class="loading-message">Loading doctors...</div>
+                    </div>
+                </div>
+
+                <!-- Blood Donors Database Tab -->
+                <div id="blood-donors" class="tab-panel">
+                    <h2>Blood Donors Database</h2>
+                    <div class="blood-donors-container">
+                        <div class="search-filters">
+                            <div class="search-section">
+                                <input type="text" id="donor-search" placeholder="Search donors by name, blood type, or location...">
+                                <button id="donor-search-btn" class="search-btn">Search</button>
+                                <button id="refresh-donors-btn" class="btn-secondary" onclick="refreshBloodDonors()">🔄 Refresh Data</button>
+                                <button id="manual-test-btn" class="btn-secondary" onclick="manualTest()" style="background: #28a745;">🧪 Manual Test</button>
+                                <button id="test-modal-btn" class="btn-secondary" onclick="testDonorModal()" style="background: #17a2b8;">🔍 Test Modal</button>
+                        
+                            </div>
+                            <div class="filters">
+                                <select id="blood-type-filter">
+                                    <option value="">All Blood Types</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                                <select id="location-filter">
+                                    <option value="">All Locations</option>
+                                    <option value="downtown">Downtown</option>
+                                    <option value="westside">Westside</option>
+                                    <option value="north">North</option>
+                                    <option value="south">South</option>
+                                </select>
+                                <select id="availability-filter">
+                                    <option value="">All Availability</option>
+                                    <option value="available">Available Now</option>
+                                    <option value="next-week">Available Next Week</option>
+                                    <option value="next-month">Available Next Month</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="donors-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Blood Type</th>
+                                        <th>Age</th>
+                                        <th>Weight (kg)</th>
+                                        <th>Hemoglobin</th>
+                                        <th>Donation Date</th>
+                                        <th>Center</th>
+                                        <th>Contact</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="blood-donors-tbody">
+                                    <!-- Blood donors will be loaded dynamically from database -->
+                                    <!-- Loading message -->
+                                    <tr id="loading-row">
+                                        <td colspan="10" class="loading-message">Loading blood donors from database...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Company Aid Providers Tab -->
+                <div id="company-aid" class="tab-panel">
+                    <h2>Company Aid Providers (BPO Type)</h2>
+                    <div class="company-aid-container">
+                        <div class="search-filters">
+                            <div class="search-section">
+                                <input type="text" id="company-search" placeholder="Search companies by name, service type, or location...">
+                                <button id="company-search-btn" class="search-btn">Search</button>
+                            </div>
+                            <div class="filters">
+                                <select id="service-type-filter">
+                                    <option value="">All Service Types</option>
+                                    <option value="billing">Medical Billing</option>
+                                    <option value="coding">Medical Coding</option>
+                                    <option value="transcription">Medical Transcription</option>
+                                    <option value="claims">Claims Processing</option>
+                                    <option value="customer-service">Customer Service</option>
+                                </select>
+                                <select id="company-location-filter">
+                                    <option value="">All Locations</option>
+                                    <option value="local">Local</option>
+                                    <option value="national">National</option>
+                                    <option value="international">International</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="companies-grid" id="companies-grid">
+                            <!-- Company cards will be loaded dynamically from database -->
+                            <div class="loading-message">Loading company aid providers...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventory Management Tab -->
+                <div id="inventory" class="tab-panel">
+                    <h2>Inventory Management</h2>
+                    <div class="inventory-container">
+                        <div class="inventory-summary">
+                            <div class="summary-card">
+                                <h3>Total Items</h3>
+                                <p class="number">1,247</p>
+                            </div>
+                            <div class="summary-card">
+                                <h3>Low Stock</h3>
+                                <p class="number warning">23</p>
+                            </div>
+                            <div class="summary-card">
+                                <h3>Out of Stock</h3>
+                                <p class="number danger">7</p>
+                            </div>
+                            <div class="summary-card">
+                                <h3>Total Value</h3>
+                                <p class="number">$45,230</p>
+                            </div>
+                        </div>
+
+                        <div class="inventory-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Item Name</th>
+                                        <th>Category</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Price</th>
+                                        <th>Total Value</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Surgical Masks</td>
+                                        <td>PPE</td>
+                                        <td>500</td>
+                                        <td>$0.50</td>
+                                        <td>$250.00</td>
+                                        <td><span class="status in-stock">In Stock</span></td>
+                                        <td>
+                                            <button class="btn-small btn-secondary">Edit</button>
+                                            <button class="btn-small btn-primary">Reorder</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>IV Bags</td>
+                                        <td>Supplies</td>
+                                        <td>15</td>
+                                        <td>$2.00</td>
+                                        <td>$30.00</td>
+                                        <td><span class="status low-stock">Low Stock</span></td>
+                                        <td>
+                                            <button class="btn-small btn-secondary">Edit</button>
+                                            <button class="btn-small btn-primary">Reorder</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Antibiotics</td>
+                                        <td>Medications</td>
+                                        <td>0</td>
+                                        <td>$15.00</td>
+                                        <td>$0.00</td>
+                                        <td><span class="status out-of-stock">Out of Stock</span></td>
+                                        <td>
+                                            <button class="btn-small btn-secondary">Edit</button>
+                                            <button class="btn-small btn-primary">Reorder</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hospital Profile Tab -->
+                <div id="profile" class="tab-panel">
+                    <h2>Hospital Profile</h2>
+                    <div class="profile-container">
+                        <div class="profile-section">
+                            <h3>Hospital Information</h3>
+                            <form id="hospital-profile-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="hospital-profile-name">Hospital Name</label>
+                                        <input type="text" id="hospital-profile-name" name="name" value="City General Hospital">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hospital-profile-email">Email</label>
+                                        <input type="email" id="hospital-profile-email" name="email" value="admin@citygeneral.com">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="hospital-profile-phone">Phone</label>
+                                        <input type="tel" id="hospital-profile-phone" name="phone" value="+1 (555) 123-4567">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hospital-profile-type">Hospital Type</label>
+                                        <select id="hospital-profile-type" name="type">
+                                            <option value="general">General Hospital</option>
+                                            <option value="specialty">Specialty Hospital</option>
+                                            <option value="teaching">Teaching Hospital</option>
+                                            <option value="research">Research Hospital</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="hospital-profile-address">Address</label>
+                                    <textarea id="hospital-profile-address" name="address" rows="2">123 Medical Center Drive, City, State 12345</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="hospital-profile-specialties">Medical Specialties</label>
+                                    <textarea id="hospital-profile-specialties" name="specialties" rows="3" placeholder="List your hospital's medical specialties...">Cardiology, Orthopedics, Neurology, Emergency Medicine, General Surgery</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="hospital-profile-services">Services Provided</label>
+                                    <textarea id="hospital-profile-services" name="services" rows="4" placeholder="List all services your hospital provides...">Emergency Care, Inpatient Services, Outpatient Services, Diagnostic Imaging, Laboratory Services, Surgery, Rehabilitation, Pharmacy, Ambulance Services</textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="hospital-profile-total-beds">Total Beds</label>
+                                        <input type="number" id="hospital-profile-total-beds" name="totalBeds" value="250" min="1" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hospital-profile-staff-count">Staff Count</label>
+                                        <input type="number" id="hospital-profile-staff-count" name="staffCount" value="1200" min="1" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="hospital-profile-annual-patients">Annual Patients</label>
+                                        <input type="number" id="hospital-profile-annual-patients" name="annualPatients" value="15000" min="0" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hospital-profile-accreditation">Accreditation</label>
+                                        <input type="text" id="hospital-profile-accreditation" name="accreditation" value="Joint Commission Accredited" placeholder="Enter accreditation status...">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="hospital-profile-emergency-services">
+                                        <input type="checkbox" id="hospital-profile-emergency-services" name="emergencyServices" checked>
+                                        Emergency Services Available 24/7
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn-primary">Update Profile</button>
+                            </form>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>Hospital Statistics</h3>
+                            <div class="hospital-stats">
+                                <p><strong>Total Beds:</strong> <span id="stats-total-beds">250</span></p>
+                                <p><strong>Staff Count:</strong> <span id="stats-staff-count">1,200</span></p>
+                                <p><strong>Annual Patients:</strong> <span id="stats-annual-patients">15,000</span></p>
+                                <p><strong>Accreditation:</strong> <span id="stats-accreditation">Joint Commission Accredited</span></p>
+                                <p><strong>Emergency Services:</strong> <span id="stats-emergency-services">24/7</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    </div>
+
+    <!-- Edit Price Modal -->
+    <div id="edit-price-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Edit Item Price</h3>
+            <form id="edit-price-form">
+                <input type="hidden" id="edit-item-name">
+                <input type="hidden" id="edit-item-category">
+                <div class="form-group">
+                    <label for="edit-current-price">Current Price</label>
+                    <input type="text" id="edit-current-price" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="edit-new-price">New Price ($)</label>
+                    <input type="number" id="edit-new-price" name="newPrice" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-price-reason">Reason for Change</label>
+                    <textarea id="edit-price-reason" name="reason" rows="3" placeholder="Enter reason for price change..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Update Price</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reorder Modal -->
+    <div id="reorder-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Reorder Options</h3>
+            <div class="item-info" id="reorder-item-info">
+                <!-- Item details will be shown here -->
+            </div>
+            <div class="dealers-container" id="dealers-container">
+                <!-- Dealers will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Doctor Modal -->
+    <div id="add-doctor-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3><i class="fas fa-user-md"></i> Add New Doctor</h3>
+            <form id="add-doctor-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="doctor-name">Doctor Name *</label>
+                        <input type="text" id="doctor-name" name="name" placeholder="e.g., Dr. John Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor-email">Email *</label>
+                        <input type="email" id="doctor-email" name="email" placeholder="doctor@hospital.com" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="doctor-phone">Phone *</label>
+                        <input type="tel" id="doctor-phone" name="phone" placeholder="+1 (555) 123-4567" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor-specialty">Medical Specialty *</label>
+                        <select id="doctor-specialty" name="specialty" required>
+                            <option value="">Select Specialty</option>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="Orthopedics">Orthopedics</option>
+                            <option value="Dermatology">Dermatology</option>
+                            <option value="Neurology">Neurology</option>
+                            <option value="Oncology">Oncology</option>
+                            <option value="Pediatrics">Pediatrics</option>
+                            <option value="General Medicine">General Medicine</option>
+                            <option value="Emergency Medicine">Emergency Medicine</option>
+                            <option value="Surgery">Surgery</option>
+                            <option value="Gynecology">Gynecology</option>
+                            <option value="Urology">Urology</option>
+                            <option value="Psychiatry">Psychiatry</option>
+                            <option value="Radiology">Radiology</option>
+                            <option value="Anesthesiology">Anesthesiology</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="doctor-qualification">Qualification *</label>
+                        <input type="text" id="doctor-qualification" name="qualification" placeholder="e.g., MD, MBBS, PhD" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor-department">Department</label>
+                        <input type="text" id="doctor-department" name="department" placeholder="e.g., Cardiology Department">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="doctor-notes">Additional Notes</label>
+                    <textarea id="doctor-notes" name="notes" rows="3" placeholder="Any additional information about the doctor..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeModal('add-doctor-modal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Doctor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+    <script src="hospital-dashboard.js"></script>
+    <script>
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🏥 Hospital dashboard loaded, initializing...');
+            
+            // Wait a bit for JavaScript to load
+            setTimeout(() => {
+                console.log('🔍 Checking function availability...');
+                console.log('initDashboard:', typeof initDashboard);
+                console.log('loadBloodDonors:', typeof loadBloodDonors);
+                console.log('displayBloodDonors:', typeof displayBloodDonors);
+                
+                if (typeof initDashboard === 'function') {
+                    console.log('✅ initDashboard found, calling...');
+                    initDashboard();
+                    console.log('✅ Dashboard initialized successfully');
+                } else {
+                    console.error('❌ initDashboard function not found!');
+                    console.log('Available global functions:', Object.keys(window).filter(key => typeof window[key] === 'function'));
+                }
+            }, 100);
+        });
+        
+        // Add manual test functions
+        window.manualTest = function() {
+            console.log('🧪 Manual test started...');
+            if (typeof loadBloodDonors === 'function') {
+                console.log('✅ loadBloodDonors function found, calling...');
+                loadBloodDonors();
+            } else {
+                console.error('❌ loadBloodDonors function not found!');
+            }
+        };
+    </script>
+</body>
+</html>

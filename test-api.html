@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test - VMEDITHON</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        .result { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 4px; }
+        button { padding: 10px 20px; margin: 5px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #5a6fd8; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <h1>VMEDITHON API Test Page</h1>
+    
+    <div class="test-section">
+        <h2>Test Medical Services API</h2>
+        <button onclick="testMedicalServices()">Test Medical Services</button>
+        <div id="medical-services-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Hospital Details API</h2>
+        <input type="text" id="hospital-id" placeholder="Enter Hospital ID" value="68b6dc732b6f5432806d6e0c">
+        <button onclick="testHospitalDetails()">Test Hospital Details</button>
+        <div id="hospital-details-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Hospital Services API</h2>
+        <input type="text" id="hospital-id-services" placeholder="Enter Hospital ID" value="68b6dc732b6f5432806d6e0c">
+        <button onclick="testHospitalServices()">Test Hospital Services</button>
+        <div id="hospital-services-result" class="result"></div>
+    </div>
+
+    <script>
+        async function testMedicalServices() {
+            const resultDiv = document.getElementById('medical-services-result');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/medical-services');
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h3>✅ Medical Services API Working</h3>
+                            <p>Found ${data.services.length} services</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ API Error: ${data.message}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Network Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testHospitalDetails() {
+            const hospitalId = document.getElementById('hospital-id').value;
+            const resultDiv = document.getElementById('hospital-details-result');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                const response = await fetch(`http://localhost:3001/api/hospital/${hospitalId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h3>✅ Hospital Details API Working</h3>
+                            <p>Hospital: ${data.hospital.name}</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ API Error: ${data.message}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Network Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testHospitalServices() {
+            const hospitalId = document.getElementById('hospital-id-services').value;
+            const resultDiv = document.getElementById('hospital-services-result');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                const response = await fetch(`http://localhost:3001/api/hospital/${hospitalId}/services`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h3>✅ Hospital Services API Working</h3>
+                            <p>Found ${data.services.length} services</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ API Error: ${data.message}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Network Error: ${error.message}</div>`;
+            }
+        }
+        
+        // Auto-test on page load
+        window.onload = function() {
+            testMedicalServices();
+        };
+    </script>
+</body>
+</html>
+
+

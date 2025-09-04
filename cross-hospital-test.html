@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cross-Hospital Availability Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .demo-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            background: #e3f2fd;
+        }
+        
+        .hospital-group {
+            background: #f8f9fa;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hospital-group h5 {
+            color: #007bff;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+        
+        .date-group {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .date-group h6 {
+            color: #28a745;
+            margin: 0 0 0.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .time-slots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .available-slot, .nearest-slot {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .available-slot {
+            background: #e8f5e8;
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+        
+        .nearest-slot {
+            background: #28a745;
+            color: white;
+            border: 1px solid #28a745;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+        }
+        
+        .availability-summary {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 1px solid #2196f3;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .availability-summary h4 {
+            color: #1976d2;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+        
+        .availability-summary p {
+            margin: 0.25rem 0;
+            color: #1565c0;
+        }
+        
+        .hospitals-summary {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .hospitals-summary h4 {
+            color: #1976d2;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+        
+        .hospitals-summary p {
+            color: #1565c0;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🏥 Cross-Hospital Availability Test</h1>
+        <p>This page demonstrates how the "Move to Available" feature works across ALL hospitals.</p>
+        
+        <div class="test-section">
+            <h3>🎯 How Cross-Hospital Search Works</h3>
+            <ol>
+                <li><strong>User selects:</strong> Date, Time, Medical Specialty</li>
+                <li><strong>System searches:</strong> ALL available hospitals for the specialty</li>
+                <li><strong>For each hospital:</strong> Checks doctor availability and appointment conflicts</li>
+                <li><strong>Finds best slot:</strong> Across all hospitals (closest time + earliest date)</li>
+                <li><strong>Auto-updates form:</strong> Date, time, and hospital to the best available slot</li>
+            </ol>
+        </div>
+        
+        <div class="demo-section">
+            <h3>📊 Demo: Cross-Hospital Results</h3>
+            <p>This shows what users will see after clicking "🔄 Move to Available":</p>
+            
+            <div class="availability-summary">
+                <h4>🎯 Cross-Hospital Availability Summary</h4>
+                <p><strong>Original Request:</strong> 2025-01-20 at 10:00</p>
+                <p><strong>✅ Best Available Slot:</strong> Regional Heart Center on 2025-01-20 at 09:00</p>
+                <p><strong>📅 Total Available Slots:</strong> 15 across all hospitals</p>
+            </div>
+            
+            <div class="hospital-group">
+                <h5>🏥 Regional Heart Center</h5>
+                <p><strong>Best Slot:</strong> 2025-01-20 at 09:00</p>
+                <p><strong>Total Slots:</strong> 8</p>
+                <p><strong>Doctors:</strong> 2 available</p>
+                
+                <div class="date-group">
+                    <h6>📅 Monday (2025-01-20)</h6>
+                    <div class="time-slots">
+                        <span class="nearest-slot">09:00</span>
+                        <span class="available-slot">10:00</span>
+                        <span class="available-slot">14:00</span>
+                        <span class="available-slot">15:00</span>
+                    </div>
+                </div>
+                
+                <div class="date-group">
+                    <h6>📅 Tuesday (2025-01-21)</h6>
+                    <div class="time-slots">
+                        <span class="available-slot">09:00</span>
+                        <span class="available-slot">10:00</span>
+                        <span class="available-slot">11:00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hospital-group">
+                <h5>🏥 Metro Medical Center</h5>
+                <p><strong>Best Slot:</strong> 2025-01-20 at 11:00</p>
+                <p><strong>Total Slots:</strong> 4</p>
+                <p><strong>Doctors:</strong> 1 available</p>
+                
+                <div class="date-group">
+                    <h6>📅 Monday (2025-01-20)</h6>
+                    <div class="time-slots">
+                        <span class="available-slot">11:00</span>
+                        <span class="available-slot">14:00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hospital-group">
+                <h5>🏥 City General Hospital</h5>
+                <p><strong>Best Slot:</strong> 2025-01-21 at 09:00</p>
+                <p><strong>Total Slots:</strong> 3</p>
+                <p><strong>Doctors:</strong> 1 available</p>
+                
+                <div class="date-group">
+                    <h6>📅 Tuesday (2025-01-21)</h6>
+                    <div class="time-slots">
+                        <span class="available-slot">09:00</span>
+                        <span class="available-slot">10:00</span>
+                        <span class="available-slot">15:00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hospitals-summary">
+                <h4>🔍 Hospitals Checked</h4>
+                <p>The system searched all 5 available hospitals for Cardiology and found the best available slots.</p>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>✅ Key Benefits</h3>
+            <ul>
+                <li><strong>Best Available Slot:</strong> Automatically finds the closest time across all hospitals</li>
+                <li><strong>Hospital Flexibility:</strong> Can change to a different hospital if better slots exist</li>
+                <li><strong>Comprehensive Search:</strong> Searches all hospitals, not just the currently selected one</li>
+                <li><strong>Smart Prioritization:</strong> Considers both time difference and day proximity</li>
+                <li><strong>Real-time Data:</strong> Checks actual appointment conflicts in the database</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧪 Test the Feature</h3>
+            <p>To test this functionality:</p>
+            <ol>
+                <li>Go to: <a href="http://localhost:8090" target="_blank">http://localhost:8090</a></li>
+                <li>Login as a patient</li>
+                <li>Click "Buying Comparison" → "Schedule Appointment"</li>
+                <li>Select any date, time, and specialty</li>
+                <li>Click "🔄 Move to Available"</li>
+                <li>Watch the form automatically update to the best available slot across all hospitals!</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
+
+

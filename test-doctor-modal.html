@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Doctor Modal</title>
+    <link rel="stylesheet" href="http://localhost:3001/chat-widget.css">
+    <script src="http://localhost:3001/chat-widget.js" defer></script>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Doctor Modal</h1>
+    
+    <button class="btn-primary" onclick="openAddDoctorModal()">
+        Add New Doctor
+    </button>
+    
+    <button class="btn-secondary" onclick="testAddDoctorButton()">
+        Test Button
+    </button>
+
+    <!-- Add Doctor Modal -->
+    <div id="add-doctor-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Add New Doctor</h3>
+            <form id="add-doctor-form">
+                <div>
+                    <label for="doctor-name">Doctor Name *</label>
+                    <input type="text" id="doctor-name" name="name" required>
+                </div>
+                <div>
+                    <label for="doctor-email">Email *</label>
+                    <input type="email" id="doctor-email" name="email" required>
+                </div>
+                <div>
+                    <label for="doctor-phone">Phone *</label>
+                    <input type="tel" id="doctor-phone" name="phone" required>
+                </div>
+                <div>
+                    <label for="doctor-specialty">Specialty *</label>
+                    <select id="doctor-specialty" name="specialty" required>
+                        <option value="">Select Specialty</option>
+                        <option value="Cardiology">Cardiology</option>
+                        <option value="Orthopedics">Orthopedics</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="doctor-qualification">Qualification *</label>
+                    <input type="text" id="doctor-qualification" name="qualification" required>
+                </div>
+                <button type="submit">Add Doctor</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Test function for debugging
+        function testAddDoctorButton() {
+            console.log('🧪 Test button clicked!');
+            console.log('🔍 Testing if openAddDoctorModal function exists:', typeof openAddDoctorModal);
+            console.log('🔍 Testing if modal element exists:', document.getElementById('add-doctor-modal'));
+            
+            if (typeof openAddDoctorModal === 'function') {
+                console.log('✅ Function exists, calling it...');
+                openAddDoctorModal();
+            } else {
+                console.error('❌ Function does not exist!');
+            }
+        }
+
+        // Open add doctor modal
+        function openAddDoctorModal() {
+            console.log('🔓 Opening add doctor modal...');
+            console.log('🔍 Looking for modal element...');
+            
+            const modal = document.getElementById('add-doctor-modal');
+            console.log('📋 Modal element found:', modal);
+            
+            if (modal) {
+                console.log('✅ Modal found, setting display to block...');
+                modal.style.display = 'block';
+                console.log('🎯 Modal display style set to:', modal.style.display);
+                
+                // Reset form
+                const form = document.getElementById('add-doctor-form');
+                if (form) {
+                    form.reset();
+                    console.log('✅ Form reset successfully');
+                } else {
+                    console.error('❌ Form element not found!');
+                }
+            } else {
+                console.error('❌ Modal element not found!');
+                console.log('🔍 Available elements with "modal" in ID:');
+                document.querySelectorAll('[id*="modal"]').forEach(el => {
+                    console.log('  -', el.id);
+                });
+            }
+        }
+
+        // Close modal function
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Add event listener for close button
+        document.addEventListener('DOMContentLoaded', function() {
+            const closeBtn = document.querySelector('.close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    closeModal('add-doctor-modal');
+                });
+            }
+
+            // Add form submission handler
+            const form = document.getElementById('add-doctor-form');
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    console.log('📝 Form submitted!');
+                    console.log('📋 Form data:', new FormData(form));
+                });
+            }
+        });
+    </script>
+</body>
+</html>

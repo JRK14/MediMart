@@ -1,0 +1,284 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #f1f1f1;
+    position: relative;
+    z-index: 10;
+}
+
+.tab-btn {
+    flex: 1;
+    min-width: 150px;
+    background: none;
+    border: none;
+    padding: 15px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-btn:nth-child(1), .tab-btn:nth-child(2) {
+    background-color: #f8f8f8;
+}
+
+.tab-btn:nth-child(3), .tab-btn:nth-child(4) {
+    background-color: #f0f0f0;
+}
+
+.tab-btn.active {
+    background-color: #e67e22;
+    color: white;
+    border-bottom: 3px solid #d35400;
+}
+
+.content-wrapper {
+    display: flex;
+    height: 600px;
+}
+
+.left-section {
+    flex: 1;
+    background-image: url('user login 1.jpeg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.left-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+#hospital-left-section {
+    background-image: url('hospital 2.jpg');
+}
+
+#patient-signup-left-section {
+    background-image: url('user login 1.jpeg');
+}
+
+#hospital-signup-left-section {
+    background-image: url('hospital.jpg');
+}
+
+.welcome-text {
+    position: relative;
+    z-index: 2;
+}
+
+.welcome-text h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.welcome-text p {
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 450px;
+    margin-bottom: 20px;
+}
+
+/* Social icons removed */
+
+.right-section {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-section {
+    text-align: right;
+    margin-bottom: 30px;
+}
+
+.logo {
+    max-height: 60px;
+    max-width: 150px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #555;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border 0.3s ease;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+    border-color: #e67e22;
+    outline: none;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.remember-me input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.login-btn, .signup-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.login-btn:hover, .signup-btn:hover {
+    background-color: #d35400;
+}
+
+.forgot-password {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.forgot-password a {
+    color: #e67e22;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.terms {
+    margin-top: auto;
+    font-size: 12px;
+    color: #777;
+    text-align: center;
+}
+
+.terms a {
+    color: #e67e22;
+    text-decoration: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.signup-toggle {
+    display: flex;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.toggle-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background-color: #f1f1f1;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn.active {
+    background-color: #e67e22;
+    color: white;
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+    .content-wrapper {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .left-section {
+        padding: 40px 20px;
+    }
+    
+    .welcome-text h1 {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 576px) {
+    .welcome-text h1 {
+        font-size: 28px;
+    }
+    
+    .right-section {
+        padding: 20px;
+    }
+}

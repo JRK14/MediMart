@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Details - VMEDITHON</title>
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .hospital-details-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .back-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .hospital-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .hospital-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hospital-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card .label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .main-content, .sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 0.5rem;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .info-item i {
+            width: 30px;
+            color: #667eea;
+            margin-right: 1rem;
+        }
+        
+        .info-item .label {
+            font-weight: 600;
+            color: #555;
+            min-width: 150px;
+        }
+        
+        .info-item .value {
+            color: #333;
+            flex: 1;
+        }
+        
+        .specialties-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .specialty-tag {
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .services-section {
+            margin-top: 2rem;
+        }
+        
+        .service-card {
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .service-name {
+            color: #667eea;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .service-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .stars {
+            color: #ffc107;
+        }
+        
+        .service-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .detail-item .label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .detail-item .value {
+            color: #333;
+        }
+        
+        .contact-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+        }
+        
+        .contact-item i {
+            color: #667eea;
+            width: 20px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hospital-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="hospital-details-container">
+            <button class="back-button" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+                Back to Comparison
+            </button>
+            
+            <div id="loading" class="loading">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+                <p>Loading hospital details...</p>
+            </div>
+            
+            <div id="error" class="error" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span id="error-message"></span>
+            </div>
+            
+            <div id="hospital-content" style="display: none;">
+                <!-- Hospital Header -->
+                <div class="hospital-header">
+                    <h1 id="hospital-name">Hospital Name</h1>
+                    <p id="hospital-type">Hospital Type</p>
+                    <p id="hospital-address">Address</p>
+                    
+                    <div class="hospital-stats">
+                        <div class="stat-card">
+                            <div class="number" id="total-beds">0</div>
+                            <div class="label">Total Beds</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="number" id="staff-count">0</div>
+                            <div class="label">Staff Count</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="number" id="annual-patients">0</div>
+                            <div class="label">Annual Patients</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label" id="emergency-status">Emergency Services</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main Content Grid -->
+                <div class="details-grid">
+                    <div class="main-content">
+                        <h2 class="section-title">Hospital Information</h2>
+                        
+                        <div class="info-item">
+                            <i class="fas fa-hospital"></i>
+                            <span class="label">Hospital Type:</span>
+                            <span class="value" id="hospital-type-detail">-</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span class="label">Address:</span>
+                            <span class="value" id="hospital-address-detail">-</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <i class="fas fa-certificate"></i>
+                            <span class="label">Accreditation:</span>
+                            <span class="value" id="accreditation">-</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <i class="fas fa-stethoscope"></i>
+                            <span class="label">Medical Specialties:</span>
+                            <span class="value">
+                                <div class="specialties-list" id="specialties-list">
+                                    <!-- Specialties will be populated here -->
+                                </div>
+                            </span>
+                        </div>
+                        
+                        <div class="services-section">
+                            <h2 class="section-title">Available Services</h2>
+                            <div id="services-list">
+                                <!-- Services will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar">
+                        <h2 class="section-title">Contact Information</h2>
+                        
+                        <div class="contact-section">
+                            <div class="contact-grid">
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span id="contact-email">-</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span id="contact-phone">-</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-globe"></i>
+                                    <span id="contact-website">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="btn-primary btn-large" onclick="openQuoteModal()">
+                                <i class="fas fa-quote-left"></i>
+                                Get Quote
+                            </button>
+                            <button class="btn-secondary btn-large" onclick="openScheduleModal()">
+                                <i class="fas fa-calendar-plus"></i>
+                                Schedule Appointment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Get Quote Modal -->
+    <div id="quote-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Get Quote</h3>
+            <div class="service-summary" id="quote-service-summary">
+                <!-- Service details will be shown here -->
+            </div>
+            <form id="quote-form">
+                <input type="hidden" id="quote-hospital-id">
+                <div class="form-group">
+                    <label for="quote-name">Full Name *</label>
+                    <input type="text" id="quote-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="quote-email">Email *</label>
+                    <input type="email" id="quote-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="quote-phone">Phone *</label>
+                    <input type="tel" id="quote-phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="quote-service">Service Required *</label>
+                    <select id="quote-service" name="service" required>
+                        <option value="">Select a service</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quote-message">Additional Requirements</label>
+                    <textarea id="quote-message" name="message" rows="3" placeholder="Please describe your specific requirements or any questions..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Request Quote</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Schedule Appointment Modal -->
+    <div id="schedule-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Schedule Appointment</h3>
+            <div class="service-summary" id="schedule-service-summary">
+                <!-- Service details will be shown here -->
+            </div>
+            <form id="schedule-form">
+                <input type="hidden" id="schedule-hospital-id">
+                <div class="form-group">
+                    <label for="schedule-service">Service *</label>
+                    <select id="schedule-service" name="service" required>
+                        <option value="">Select a service</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="schedule-date">Preferred Date *</label>
+                    <input type="date" id="schedule-date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="schedule-time">Preferred Time *</label>
+                    <input type="time" id="schedule-time" name="time" required>
+                </div>
+                <div class="form-group">
+                    <label for="schedule-type">Appointment Type *</label>
+                    <select id="schedule-type" name="type" required>
+                        <option value="">Select Type</option>
+                        <option value="consultation">Consultation</option>
+                        <option value="follow-up">Follow-up</option>
+                        <option value="emergency">Emergency</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="schedule-notes">Additional Notes</label>
+                    <textarea id="schedule-notes" name="notes" rows="3" placeholder="Any specific concerns or requirements..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Schedule Appointment</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Get hospital ID from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const hospitalId = urlParams.get('id');
+        
+        if (!hospitalId) {
+            showError('No hospital ID provided');
+        } else {
+            loadHospitalDetails(hospitalId);
+        }
+        
+        async function loadHospitalDetails(hospitalId) {
+            try {
+                console.log('Loading hospital details for ID:', hospitalId);
+                
+                // Load hospital basic information
+                const hospitalResponse = await fetch(`http://localhost:3001/api/hospital/${hospitalId}`);
+                console.log('Hospital response status:', hospitalResponse.status);
+                
+                if (!hospitalResponse.ok) {
+                    throw new Error('Failed to load hospital information');
+                }
+                const hospital = await hospitalResponse.json();
+                console.log('Hospital data received:', hospital);
+                
+                // Load hospital services
+                const servicesResponse = await fetch(`http://localhost:3001/api/hospital/${hospitalId}/services`);
+                console.log('Services response status:', servicesResponse.status);
+                
+                let services = [];
+                if (servicesResponse.ok) {
+                    const servicesData = await servicesResponse.json();
+                    services = servicesData.services || [];
+                    console.log('Services data received:', services);
+                }
+                
+                // Display the data
+                displayHospitalDetails(hospital.hospital, services);
+                
+            } catch (error) {
+                console.error('Error loading hospital details:', error);
+                showError('Failed to load hospital details. Please try again.');
+            }
+        }
+        
+        function displayHospitalDetails(hospital, services) {
+            // Store data in global variables for modals
+            currentHospital = hospital;
+            currentServices = services;
+            
+            // Hide loading, show content
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('hospital-content').style.display = 'block';
+            
+            // Populate hospital header
+            document.getElementById('hospital-name').textContent = hospital.name;
+            document.getElementById('hospital-type').textContent = hospital.type || 'General Hospital';
+            document.getElementById('hospital-address').textContent = hospital.address || 'Address not available';
+            
+            // Populate stats
+            document.getElementById('total-beds').textContent = hospital.totalBeds || 'N/A';
+            document.getElementById('staff-count').textContent = hospital.staffCount || 'N/A';
+            document.getElementById('annual-patients').textContent = hospital.annualPatients || 'N/A';
+            
+            const emergencyStatus = document.getElementById('emergency-status');
+            if (hospital.emergencyServices) {
+                emergencyStatus.innerHTML = '<i class="fas fa-check-circle" style="color: #28a745;"></i> 24/7 Emergency';
+            } else {
+                emergencyStatus.innerHTML = '<i class="fas fa-times-circle" style="color: #dc3545;"></i> No Emergency Services';
+            }
+            
+            // Populate detailed information
+            document.getElementById('hospital-type-detail').textContent = hospital.type || 'Not specified';
+            document.getElementById('hospital-address-detail').textContent = hospital.address || 'Not specified';
+            document.getElementById('accreditation').textContent = hospital.accreditation || 'Not specified';
+            document.getElementById('contact-email').textContent = hospital.email || 'Not available';
+            document.getElementById('contact-phone').textContent = hospital.phone || 'Not available';
+            document.getElementById('contact-website').textContent = hospital.website || 'Not available';
+            
+            // Populate specialties
+            const specialtiesList = document.getElementById('specialties-list');
+            if (hospital.specialties && hospital.specialties.length > 0) {
+                specialtiesList.innerHTML = hospital.specialties.map(specialty => 
+                    `<span class="specialty-tag">${specialty}</span>`
+                ).join('');
+            } else {
+                specialtiesList.innerHTML = '<span style="color: #666;">No specialties listed</span>';
+            }
+            
+            // Populate services
+            const servicesList = document.getElementById('services-list');
+            if (services && services.length > 0) {
+                servicesList.innerHTML = services.map(service => `
+                    <div class="service-card">
+                        <div class="service-header">
+                            <div class="service-name">${service.serviceName}</div>
+                            <div class="service-rating">
+                                <span class="stars">${'★'.repeat(Math.floor(service.rating))}${'☆'.repeat(5-Math.floor(service.rating))}</span>
+                                <span>${service.rating}/5 (${service.totalRatings} reviews)</span>
+                            </div>
+                        </div>
+                        <div class="service-details">
+                            <div class="detail-item">
+                                <span class="label">Category:</span>
+                                <span class="value">${service.category}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Price Range:</span>
+                                <span class="value">$${service.price.min.toLocaleString()} - $${service.price.max.toLocaleString()}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Wait Time:</span>
+                                <span class="value">${service.waitTime}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Success Rate:</span>
+                                <span class="value">${service.successRate}%</span>
+                            </div>
+                        </div>
+                        ${service.description ? `<p style="margin-top: 1rem; color: #666;">${service.description}</p>` : ''}
+                    </div>
+                `).join('');
+            } else {
+                servicesList.innerHTML = '<p style="color: #666; text-align: center;">No services available</p>';
+            }
+        }
+        
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('error-message').textContent = message;
+        }
+        
+        function goBack() {
+            window.history.back();
+        }
+        
+        // Global variables to store hospital and services data
+        let currentHospital = null;
+        let currentServices = [];
+
+        // Modal functions
+        function openQuoteModal() {
+            if (!currentHospital || !currentServices.length) {
+                alert('Please wait for hospital data to load');
+                return;
+            }
+
+            // Populate service dropdown
+            const serviceSelect = document.getElementById('quote-service');
+            serviceSelect.innerHTML = '<option value="">Select a service</option>';
+            currentServices.forEach(service => {
+                const option = document.createElement('option');
+                option.value = service._id;
+                option.textContent = `${service.serviceName} - $${service.price.min.toLocaleString()} - $${service.price.max.toLocaleString()}`;
+                serviceSelect.appendChild(option);
+            });
+
+            // Set hospital ID
+            document.getElementById('quote-hospital-id').value = currentHospital._id;
+
+            // Pre-fill with patient info if available
+            const patientName = localStorage.getItem('userName');
+            const patientEmail = localStorage.getItem('userEmail');
+            if (patientName) document.getElementById('quote-name').value = patientName;
+            if (patientEmail) document.getElementById('quote-email').value = patientEmail;
+
+            // Show modal
+            document.getElementById('quote-modal').style.display = 'block';
+        }
+
+        function openScheduleModal() {
+            if (!currentHospital || !currentServices.length) {
+                alert('Please wait for hospital data to load');
+                return;
+            }
+
+            // Populate service dropdown
+            const serviceSelect = document.getElementById('schedule-service');
+            serviceSelect.innerHTML = '<option value="">Select a service</option>';
+            currentServices.forEach(service => {
+                const option = document.createElement('option');
+                option.value = service._id;
+                option.textContent = `${service.serviceName} - $${service.price.min.toLocaleString()} - $${service.price.max.toLocaleString()}`;
+                serviceSelect.appendChild(option);
+            });
+
+            // Set hospital ID
+            document.getElementById('schedule-hospital-id').value = currentHospital._id;
+
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('schedule-date').min = today;
+
+            // Show modal
+            document.getElementById('schedule-modal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Form submission handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            // Quote form handling
+            const quoteForm = document.getElementById('quote-form');
+            if (quoteForm) {
+                quoteForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    
+                    const hospitalId = document.getElementById('quote-hospital-id').value;
+                    const serviceId = document.getElementById('quote-service').value;
+                    const name = document.getElementById('quote-name').value;
+                    const email = document.getElementById('quote-email').value;
+                    const phone = document.getElementById('quote-phone').value;
+                    const message = document.getElementById('quote-message').value;
+
+                    if (!serviceId) {
+                        alert('Please select a service');
+                        return;
+                    }
+
+                    submitQuoteRequest(serviceId, hospitalId, name, email, phone, message);
+                });
+            }
+
+            // Schedule form handling
+            const scheduleForm = document.getElementById('schedule-form');
+            if (scheduleForm) {
+                scheduleForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    
+                    const hospitalId = document.getElementById('schedule-hospital-id').value;
+                    const serviceId = document.getElementById('schedule-service').value;
+                    const date = document.getElementById('schedule-date').value;
+                    const time = document.getElementById('schedule-time').value;
+                    const type = document.getElementById('schedule-type').value;
+                    const notes = document.getElementById('schedule-notes').value;
+
+                    if (!serviceId) {
+                        alert('Please select a service');
+                        return;
+                    }
+
+                    scheduleAppointment(serviceId, hospitalId, date, time, type, notes);
+                });
+            }
+
+            // Modal close button handling
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('close')) {
+                    const modal = event.target.closest('.modal');
+                    if (modal) {
+                        modal.style.display = 'none';
+                    }
+                }
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
+            });
+        });
+
+        // API functions
+        async function submitQuoteRequest(serviceId, hospitalId, name, email, phone, message) {
+            try {
+                const response = await fetch('http://localhost:3001/api/patient/quote-request', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        serviceId,
+                        hospitalId,
+                        name,
+                        email,
+                        phone,
+                        message
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to submit quote request');
+                }
+
+                const result = await response.json();
+                alert('Quote request submitted successfully! We will contact you soon.');
+                
+                // Close modal and reset form
+                closeModal('quote-modal');
+                document.getElementById('quote-form').reset();
+
+            } catch (error) {
+                console.error('Error submitting quote request:', error);
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        async function scheduleAppointment(serviceId, hospitalId, date, time, type, notes) {
+            try {
+                const patientId = localStorage.getItem('patientId');
+                if (!patientId) {
+                    alert('Please log in as a patient to schedule appointments');
+                    return;
+                }
+
+                // Find the selected service to get doctor and specialty info
+                const selectedService = currentServices.find(service => service._id === serviceId);
+                if (!selectedService) {
+                    alert('Service not found');
+                    return;
+                }
+
+                const response = await fetch('http://localhost:3001/api/patient/appointments', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        patientId,
+                        hospitalId,
+                        doctorName: 'Dr. Smith', // Default doctor name
+                        specialty: selectedService.category || 'General Medicine',
+                        appointmentDate: date,
+                        appointmentTime: time,
+                        appointmentType: type,
+                        status: 'pending',
+                        notes: notes || '',
+                        hospitalName: currentHospital.name // Include hospital name
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to schedule appointment');
+                }
+
+                const result = await response.json();
+                alert('Appointment scheduled successfully! We will confirm shortly.');
+                
+                // Close modal, reset form
+                closeModal('schedule-modal');
+                document.getElementById('schedule-form').reset();
+
+                // Redirect to patient dashboard to see the new appointment
+                if (confirm('Appointment scheduled! Would you like to go to your appointments page?')) {
+                    window.location.href = 'patient-dashboard.html';
+                }
+
+            } catch (error) {
+                console.error('Error scheduling appointment:', error);
+                alert(`Error: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html>

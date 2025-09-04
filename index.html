@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital & Patient Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="http://localhost:3001/chat-widget.css">
+    <script src="http://localhost:3001/chat-widget.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <div class="login-container">
+            <div class="tabs">
+                <button class="tab-btn active" id="patient-tab">Patient Login</button>
+                <button class="tab-btn" id="hospital-tab">Hospital Login</button>
+                <button class="tab-btn" id="patient-signup-tab">Patient Sign Up</button>
+                <button class="tab-btn" id="hospital-signup-tab">Hospital Sign Up</button>
+            </div>
+            
+            <div class="content-wrapper">
+                <div class="left-section" id="patient-left-section">
+                    <div class="welcome-text">
+                        <h1>Welcome Back</h1>
+                        <p>Experience compassionate care with a team dedicated to your well-being, from routine check-ups to specialist treatments. Discover expert doctors, modern facilities, and personalized solutions—all in one place, designed with patients in mind.</p>
+                    </div>
+                </div>
+                
+                <div class="left-section hidden" id="hospital-left-section">
+                    <div class="welcome-text">
+                        <h1>Welcome Back</h1>
+                        <p>Attracting hospitals to a medical-related website requires a strong value proposition, user-friendly features, and credibility-building content that solves genuine pain points for healthcare providers.</p>
+                    </div>
+                </div>
+                
+                <div class="right-section" id="patient-form">
+                    <div class="logo-section">
+                        <img src="logo1.jpeg" alt="Logo" class="logo">
+                    </div>
+                    <h2>Sign in</h2>
+                    <form>
+                        <div class="input-group">
+                            <label for="patient-email">Email Address</label>
+                            <input type="email" id="patient-email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="patient-password">Password</label>
+                            <input type="password" id="patient-password" placeholder="Enter your password" required>
+                        </div>
+                        <div class="remember-me">
+                            <input type="checkbox" id="patient-remember">
+                            <label for="patient-remember">Remember Me</label>
+                        </div>
+                        <button type="submit" class="login-btn">Sign in now</button>
+                        <div class="forgot-password">
+                            <a href="#">Lost your password?</a>
+                        </div>
+                    </form>
+                    <div class="terms">
+                        <p>By clicking on "Sign in now" you agree to our <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>
+                    </div>
+                </div>
+                
+                <div class="right-section hidden" id="hospital-form">
+                    <div class="logo-section">
+                        <img src="logo1.jpeg" alt="Logo" class="logo">
+                    </div>
+                    <h2>Sign in</h2>
+                    <form>
+                        <div class="input-group">
+                            <label for="hospital-email">Email Address</label>
+                            <input type="email" id="hospital-email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="hospital-password">Password</label>
+                            <input type="password" id="hospital-password" placeholder="Enter your password" required>
+                        </div>
+                        <div class="remember-me">
+                            <input type="checkbox" id="hospital-remember">
+                            <label for="hospital-remember">Remember Me</label>
+                        </div>
+                        <button type="submit" class="login-btn">Sign in now</button>
+                        <div class="forgot-password">
+                            <a href="#">Lost your password?</a>
+                        </div>
+                    </form>
+                    <div class="terms">
+                        <p>By clicking on "Sign in now" you agree to our <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>
+                    </div>
+                </div>
+                
+                <!-- Patient Sign Up Section -->
+                <div class="left-section hidden" id="patient-signup-left-section">
+                    <div class="welcome-text">
+                        <h1>Join As Patient</h1>
+                        <p>Create your patient account to access personalized healthcare services. Find doctors, book appointments, and manage your medical records all in one place.</p>
+                    </div>
+                </div>
+                
+                <div class="right-section hidden" id="patient-signup-form-container">
+                    <div class="logo-section">
+                        <img src="logo1.jpeg" alt="Logo" class="logo">
+                    </div>
+                    <h2>Create Patient Account</h2>
+                    
+                    <!-- Patient Sign Up Form -->
+                    <form id="patient-signup-form">
+                        <div class="input-group">
+                            <label for="new-patient-name">Full Name</label>
+                            <input type="text" id="new-patient-name" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="new-patient-email">Email Address</label>
+                            <input type="email" id="new-patient-email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="new-patient-password">Password</label>
+                            <input type="password" id="new-patient-password" placeholder="Create a password" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="new-patient-confirm-password">Confirm Password</label>
+                            <input type="password" id="new-patient-confirm-password" placeholder="Confirm your password" required>
+                        </div>
+                        <button type="submit" class="signup-btn">Create Patient Account</button>
+                    </form>
+                    
+                    <div class="terms">
+                        <p>By creating an account, you agree to our <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>
+                    </div>
+                </div>
+                
+                <!-- Hospital Sign Up Section -->
+                <div class="left-section hidden" id="hospital-signup-left-section">
+                    <div class="welcome-text">
+                        <h1>Join As Hospital</h1>
+                        <p>Create your hospital account to showcase your services, manage appointments, and connect with patients. Join our network of healthcare providers.</p>
+                    </div>
+                </div>
+                
+                <div class="right-section hidden" id="hospital-signup-form-container">
+                    <div class="logo-section">
+                        <img src="logo1.jpeg" alt="Logo" class="logo">
+                    </div>
+                    <h2>Create Hospital Account</h2>
+                    
+                    <!-- Hospital Sign Up Form -->
+                    <form id="hospital-signup-form">
+                        <div class="input-group">
+                            <label for="new-hospital-name">Hospital Name</label>
+                            <input type="text" id="new-hospital-name" placeholder="Enter hospital name" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="new-hospital-email">Email Address</label>
+                            <input type="email" id="new-hospital-email" placeholder="Enter hospital email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="new-hospital-password">Password</label>
+                            <input type="password" id="new-hospital-password" placeholder="Create a password" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="new-hospital-confirm-password">Confirm Password</label>
+                            <input type="password" id="new-hospital-confirm-password" placeholder="Confirm your password" required>
+                        </div>
+                        <button type="submit" class="signup-btn">Create Hospital Account</button>
+                    </form>
+                    
+                    <div class="terms">
+                        <p>By creating an account, you agree to our <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

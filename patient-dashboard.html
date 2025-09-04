@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard - VMEDITHON</title>
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="http://localhost:3001/chat-widget.css">
+    <script src="http://localhost:3001/chat-widget.js" defer></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="logo1.jpeg" alt="Logo" class="logo">
+                    <h1>VMEDITHON</h1>
+                </div>
+                <div class="user-info">
+                    <span id="patient-name">Welcome, Patient</span>
+                    <button id="logout-btn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Navigation Tabs -->
+            <nav class="dashboard-nav">
+                <button class="nav-tab active" data-tab="buying">Buying Comparison</button>
+                <button class="nav-tab" data-tab="blood-donation">Blood Donation</button>
+                <button class="nav-tab" data-tab="appointments">My Appointments</button>
+                <button class="nav-tab" data-tab="profile">Profile</button>
+            </nav>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Buying Comparison Tab -->
+                <div id="buying" class="tab-panel active">
+                    <h2>Medical Services Comparison</h2>
+                    <div class="comparison-container">
+                        <div class="search-section">
+                            <input type="text" id="service-search" placeholder="Search for medical services, treatments, or procedures...">
+                            <button id="search-btn" class="search-btn">Search</button>
+                        </div>
+                        
+                        <div class="filters">
+                            <select id="category-filter">
+                                <option value="">All Categories</option>
+                                <option value="cardiology">Cardiology</option>
+                                <option value="orthopedics">Orthopedics</option>
+                                <option value="dermatology">Dermatology</option>
+                                <option value="neurology">Neurology</option>
+                                <option value="oncology">Oncology</option>
+                            </select>
+                            <select id="price-filter">
+                                <option value="">All Prices</option>
+                                <option value="low">Low Cost</option>
+                                <option value="medium">Medium Cost</option>
+                                <option value="high">High Cost</option>
+                            </select>
+                            <select id="rating-filter">
+                                <option value="">All Ratings</option>
+                                <option value="4+">4+ Stars</option>
+                                <option value="3+">3+ Stars</option>
+                                <option value="2+">2+ Stars</option>
+                            </select>
+                        </div>
+
+                        <div class="comparison-results" id="comparison-results">
+                            <!-- Service cards will be loaded dynamically -->
+                            <div class="loading-message">Loading medical services...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blood Donation Tab -->
+                <div id="blood-donation" class="tab-panel">
+                    <h2>Blood Donation Form</h2>
+                    <div class="blood-donation-form">
+                        <form id="donation-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="donor-age">Age *</label>
+                                    <input type="number" id="donor-age" name="age" min="18" max="65" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="donor-weight">Weight (kg) *</label>
+                                    <input type="number" id="donor-weight" name="weight" min="45" step="0.1" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="donor-hemoglobin">Hemoglobin Level (g/dL) *</label>
+                                    <input type="number" id="donor-hemoglobin" name="hemoglobin" min="12.5" max="20" step="0.1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="donor-blood-type">Blood Type *</label>
+                                    <select id="donor-blood-type" name="bloodType" required>
+                                        <option value="">Select Blood Type</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Health Status *</label>
+                                <div class="health-questions">
+                                    <div class="question-item">
+                                        <input type="checkbox" id="good-health" name="goodHealth" required>
+                                        <label for="good-health">I confirm I am in good health</label>
+                                    </div>
+                                    <div class="question-item">
+                                        <input type="checkbox" id="no-infections" name="noInfections" required>
+                                        <label for="no-infections">I have no infections or communicable diseases</label>
+                                    </div>
+                                    <div class="question-item">
+                                        <input type="checkbox" id="no-medications" name="noMedications" required>
+                                        <label for="no-medications">I am not taking any medications that would affect donation</label>
+                                    </div>
+                                    <div class="question-item">
+                                        <input type="checkbox" id="no-surgery" name="noRecentSurgery" required>
+                                        <label for="no-surgery">I have not had surgery in the last 6 months</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="donation-date">Preferred Donation Date *</label>
+                                <input type="date" id="donation-date" name="donationDate" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="donation-center">Preferred Donation Center</label>
+                                <select id="donation-center" name="donationCenter">
+                                    <option value="">Select Center</option>
+                                    <option value="city-general">City General Hospital</option>
+                                    <option value="metro-medical">Metro Medical Center</option>
+                                    <option value="regional-heart">Regional Heart Institute</option>
+                                    <option value="community-blood">Community Blood Bank</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="additional-notes">Additional Notes</label>
+                                <textarea id="additional-notes" name="additionalNotes" rows="3" placeholder="Any additional information or special requirements..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-primary">Submit Donation Request</button>
+                        </form>
+                    </div>
+                    
+                    <!-- Blood Donations List -->
+                    <div class="blood-donations-section">
+                        <h3>My Blood Donation Requests</h3>
+                        <div id="blood-donations-list" class="blood-donations-list">
+                            <!-- Blood donations will be loaded dynamically -->
+                            <div class="loading-message">Loading your blood donations...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appointments Tab -->
+                <div id="appointments" class="tab-panel">
+                    <div class="appointments-header">
+                        <h2>My Appointments</h2>
+                        <button class="btn-refresh" onclick="refreshAppointments()" title="Refresh appointments">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="appointments-container" id="appointments-container">
+                        <!-- Appointments will be loaded dynamically -->
+                        <div class="loading-message">Loading appointments...</div>
+                    </div>
+                </div>
+
+                <!-- Reschedule Modal -->
+                <div id="reschedule-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3>Reschedule Appointment</h3>
+                        <form id="reschedule-form">
+                            <input type="hidden" id="reschedule-appointment-id">
+                            <div class="form-group">
+                                <label for="reschedule-date">New Date *</label>
+                                <input type="date" id="reschedule-date" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reschedule-time">New Time *</label>
+                                <input type="time" id="reschedule-time" name="time" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reschedule-reason">Reason for Rescheduling</label>
+                                <textarea id="reschedule-reason" name="reason" rows="3" placeholder="Please provide a reason for rescheduling..."></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary">Reschedule Appointment</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Cancel Confirmation Modal -->
+                <div id="cancel-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3>Cancel Appointment</h3>
+                        <p>Are you sure you want to cancel this appointment?</p>
+                        <div class="appointment-summary" id="cancel-appointment-summary">
+                            <!-- Appointment details will be shown here -->
+                        </div>
+                        <form id="cancel-form">
+                            <input type="hidden" id="cancel-appointment-id">
+                            <div class="form-group">
+                                <label for="cancel-reason">Reason for Cancellation</label>
+                                <textarea id="cancel-reason" name="reason" rows="3" placeholder="Please provide a reason for cancellation..." required></textarea>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-secondary" onclick="closeModal('cancel-modal')">Keep Appointment</button>
+                                <button type="submit" class="btn-danger">Cancel Appointment</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Get Quote Modal -->
+                <div id="quote-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3>Get Quote</h3>
+                        <div class="service-summary" id="quote-service-summary">
+                            <!-- Service details will be shown here -->
+                        </div>
+                        <form id="quote-form">
+                            <input type="hidden" id="quote-service-id">
+                            <input type="hidden" id="quote-hospital-id">
+                            <div class="form-group">
+                                <label for="quote-name">Full Name *</label>
+                                <input type="text" id="quote-name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="quote-email">Email *</label>
+                                <input type="email" id="quote-email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="quote-phone">Phone *</label>
+                                <input type="tel" id="quote-phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="quote-message">Additional Requirements</label>
+                                <textarea id="quote-message" name="message" rows="3" placeholder="Please describe your specific requirements or any questions..."></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary">Request Quote</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Schedule Appointment Modal -->
+                <div id="schedule-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3>Schedule Appointment</h3>
+                        <div class="service-summary" id="schedule-service-summary">
+                            <!-- Service details will be shown here -->
+                        </div>
+                        <form id="schedule-form">
+                            <input type="hidden" id="schedule-service-id">
+                            <input type="hidden" id="schedule-hospital-id">
+                            <div class="form-group">
+                                <label for="schedule-date">Preferred Date *</label>
+                                <input type="date" id="schedule-date" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="schedule-time">Preferred Time *</label>
+                                <input type="time" id="schedule-time" name="time" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="schedule-specialty">Medical Specialty *</label>
+                                <select id="schedule-specialty" name="specialty" required>
+                                    <option value="">Select Specialty</option>
+                                    <option value="Cardiology">Cardiology</option>
+                                    <option value="Orthopedics">Orthopedics</option>
+                                    <option value="Dermatology">Dermatology</option>
+                                    <option value="Neurology">Neurology</option>
+                                    <option value="Oncology">Oncology</option>
+                                    <option value="Pediatrics">Pediatrics</option>
+                                    <option value="General Medicine">General Medicine</option>
+                                    <option value="Emergency Medicine">Emergency Medicine</option>
+                                    <option value="Surgery">Surgery</option>
+                                    <option value="Gynecology">Gynecology</option>
+                                    <option value="Urology">Urology</option>
+                                    <option value="Psychiatry">Psychiatry</option>
+                                    <option value="Radiology">Radiology</option>
+                                    <option value="Anesthesiology">Anesthesiology</option>
+                                </select>
+                                <button type="button" class="btn-secondary btn-small" onclick="checkDoctorAvailability()" id="check-availability-btn">🔄 Move to Available</button>
+                                <small class="form-help">💡 Select date, time, and specialty first, then click to automatically move to the best available slot across ALL hospitals</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="schedule-type">Appointment Type *</label>
+                                <select id="schedule-type" name="type" required>
+                                    <option value="">Select Type</option>
+                                    <option value="consultation">Consultation</option>
+                                    <option value="follow-up">Follow-up</option>
+                                    <option value="emergency">Emergency</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="schedule-doctor">Select Doctor *</label>
+                                <select id="schedule-doctor" name="doctor" required>
+                                    <option value="">First select specialty, date, and time</option>
+                                </select>
+                                <small class="form-help">Available doctors will appear here after you select specialty, date, and time</small>
+                            </div>
+                            
+                            <!-- Doctor Availability Display -->
+                            <div class="form-group" id="availability-display" style="display: none;">
+                                <label>Available Time Slots:</label>
+                                <div class="availability-results" id="availability-results">
+                                    <!-- Availability results will be shown here -->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="schedule-notes">Additional Notes</label>
+                                <textarea id="schedule-notes" name="notes" rows="3" placeholder="Any specific concerns or requirements..."></textarea>
+                            </div>
+                            <div class="form-actions" style="display: flex !important; visibility: visible !important; opacity: 1 !important; position: static !important; height: auto !important; overflow: visible !important; z-index: 1000 !important; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important; border: 3px solid #667eea !important; border-radius: 15px !important; padding: 25px !important; margin: 25px 0 !important; justify-content: center !important; align-items: center !important; gap: 20px !important; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2) !important;">
+                                <button type="submit" class="btn-primary" id="book-appointment-btn" style="display: inline-block !important; visibility: visible !important; opacity: 1 !important; position: static !important; height: auto !important; width: auto !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white !important; padding: 15px 30px !important; font-size: 18px !important; font-weight: 700 !important; border: none !important; border-radius: 10px !important; cursor: pointer !important; box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important; margin: 10px 5px !important; min-width: 180px !important; text-align: center !important; transition: all 0.3s ease !important;">📅 Book Appointment</button>
+                                <button type="button" class="btn-secondary" onclick="closeModal('schedule-modal')" style="display: inline-block !important; visibility: visible !important; opacity: 1 !important; min-width: 120px !important; padding: 12px 24px !important; font-size: 16px !important; font-weight: 600 !important; background: #6c757d !important; color: white !important; border: none !important; border-radius: 8px !important; cursor: pointer !important;">❌ Cancel</button>
+                            </div>
+                        </form>
+                        
+
+                    </div>
+                </div>
+
+                <!-- Hospital Details Modal -->
+                <div id="hospital-details-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3 id="hospital-details-title">Hospital Details</h3>
+                        <div class="hospital-rating-section" id="hospital-rating-section">
+                            <div class="rating-input">
+                                <label for="hospital-rating">Rate this hospital:</label>
+                                <select id="hospital-rating" name="rating">
+                                    <option value="">Select Rating</option>
+                                    <option value="1">1 Star</option>
+                                    <option value="2">2 Stars</option>
+                                    <option value="3">3 Stars</option>
+                                    <option value="4">4 Stars</option>
+                                    <option value="5">5 Stars</option>
+                                </select>
+                                <button type="button" class="btn-primary" onclick="submitHospitalRating()">Submit</button>
+                            </div>
+                        </div>
+                        <div class="hospital-details-content" id="hospital-details-content">
+                            <!-- Hospital details will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Tab -->
+                <div id="profile" class="tab-panel">
+                    <h2>Patient Profile</h2>
+                    <div class="profile-container">
+                        <div class="profile-section">
+                            <h3>Personal Information</h3>
+                            <form id="profile-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="profile-name">Full Name</label>
+                                        <input type="text" id="profile-name" name="name" value="John Doe">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profile-email">Email</label>
+                                        <input type="email" id="profile-email" name="email" value="john.doe@email.com">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="profile-phone">Phone</label>
+                                        <input type="tel" id="profile-phone" name="phone" value="+1 (555) 123-4567">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profile-dob">Date of Birth</label>
+                                        <input type="date" id="profile-dob" name="dob" value="1990-05-15">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-address">Address</label>
+                                    <textarea id="profile-address" name="address" rows="2">123 Main Street, City, State 12345</textarea>
+                                </div>
+                                <button type="submit" class="btn-primary">Update Profile</button>
+                            </form>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>Medical Information</h3>
+                            <div class="medical-info">
+                                <p><strong>Blood Type:</strong> O+</p>
+                                <p><strong>Allergies:</strong> Penicillin, Shellfish</p>
+                                <p><strong>Chronic Conditions:</strong> None</p>
+                                <p><strong>Emergency Contact:</strong> Jane Doe (Spouse) - +1 (555) 987-6543</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="patient-dashboard.js"></script>
+</body>
+</html>
